@@ -4,13 +4,32 @@ class TicketsController < ApplicationController
     render json: tickets.to_json(include: [:courier, :client])
   end
 
+  def today
+    today = DateTime.now()
+    tickets = Ticket.where({:time_due => today.beginning_of_day..today.end_of_day})
+      .or(Ticket.where({:time_ready => today.beginning_of_day..today.end_of_day}))
+    render json: tickets
+  end
+
   def search
-    tickets = Ticket.where({
-      courier_id: params[:courier_id],
-      client_id: params[:client_id],
-      is_complete: params[:complete],
-      is_rush: params[:rush],
-    })
+    start_date = DateTime.new(2000,1,1)
+    end_date = DateTime.now()
+
+    if params[:start]
+      start_date = DateTime.parse(params[:start])
+    end
+    if params[:end]
+      end_date = DateTime.parse(params[:end])
+    end
+
+    sql = {
+      :time_ready => start_date.beginning_of_day..end_date.end_of_day,
+    }
+
+    sql[:client_id] = params[:client_id] if params[:client_id]
+    sql[:courier_id] = params[:courier_id] if params[:courier_id]
+
+    tickets = Ticket.where(sql)
     render json: tickets.to_json(include: [:courier, :client])
   end
 
