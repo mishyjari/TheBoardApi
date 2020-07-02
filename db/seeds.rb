@@ -85,7 +85,7 @@ end
   Ticket.create!({
     pickup: Faker::Address.full_address,
     dropoff: Faker::Address.full_address,
-    time_ready: Faker::Time.backward(days: 1),
+    time_ready: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now + 1),
     time_due: Faker::Time.forward(days: 1),
     is_rush: Faker::Boolean.boolean(true_ratio: 0.15),
     rush_details: '',

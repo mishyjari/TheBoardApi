@@ -1,6 +1,12 @@
 class TicketsController < ApplicationController
+
   def index
-    tickets = Ticket.all.limit(500)
+    tickets = Ticket.all
+    render json: tickets.to_json(include: [:courier, :client])
+  end
+
+  def paginate
+    tickets = Ticket.paginate(:page => params[:page], per_page: 10)
     render json: tickets.to_json(include: [:courier, :client])
   end
 
@@ -8,6 +14,14 @@ class TicketsController < ApplicationController
     today = DateTime.now()
     tickets = Ticket.where({:time_due => today.beginning_of_day..today.end_of_day})
       .or(Ticket.where({:time_ready => today.beginning_of_day..today.end_of_day}))
+      .or(Ticket.where({:created_at => today.beginning_of_day..today.end_of_day}))
+      .or(Ticket.where({:is_complete => false}))
+      .or(Ticket.where({:courier_id => nil}))
+    render json: tickets.to_json(include: [:courier, :client])
+  end
+
+  def incomplete_unassigned
+    tickets = Ticket.where({is_complete: false}).or(Ticket.where({ courier_id: nil }))
     render json: tickets
   end
 
@@ -76,7 +90,9 @@ class TicketsController < ApplicationController
       notes: params[:notes],
       additional_charge: params[:additional_charge],
       base_charge: params[:base_charge],
-      is_complete: params[:is_complete]
+      is_complete: params[:is_complete],
+      pod: params[:pod],
+      time_delivered: params[:time_delivered],
     })
     render json: ticket.to_json(include: [:courier, :client])
   end
