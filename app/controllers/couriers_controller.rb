@@ -12,7 +12,7 @@ class CouriersController < ApplicationController
 
   def show
     courier = Courier.find(params[:id])
-    render json: courier.to_json(methods: [:full_name, :incomplete_tickets, :tickets_today])
+    render json: courier.to_json(include: :tickets, methods: [:full_name, :incomplete_tickets, :tickets_today])
   end
 
   def create
