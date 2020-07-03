@@ -8,4 +8,15 @@ class Client < ApplicationRecord
       !t.is_complete
     end
   end
+
+  def tickets_today
+    today = DateTime.now()
+      tickets = self.tickets
+      tickets.filter do |t|
+        (t.time_due > today.beginning_of_day && t.time_due < today.end_of_day ||
+          t.time_ready > today.beginning_of_day && t.time_due < today.end_of_day ||
+          t.created_at > today.beginning_of_day && t.time_due < today.end_of_day)
+      end
+  end
+
 end

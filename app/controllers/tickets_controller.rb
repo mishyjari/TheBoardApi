@@ -43,8 +43,13 @@ class TicketsController < ApplicationController
     sql[:client_id] = params[:client_id] if params[:client_id]
     sql[:courier_id] = params[:courier_id] if params[:courier_id]
 
-    tickets = Ticket.where(sql)
-    render json: tickets.to_json(include: [:courier, :client])
+    page = params[:page] ? params[:page] : 1
+
+    tickets = Ticket.where(sql).order('CREATED_AT DESC').paginate(page: page, per_page: 20)
+    render json: {
+      'tickets' => tickets.as_json(include: [:courier, :client]),
+      'count' => tickets.total_entries
+    }.to_json
   end
 
   def active
@@ -100,5 +105,9 @@ class TicketsController < ApplicationController
   def destroy
     ticket = Ticket.find(params[:id]).destroy
     render json: ticket
+  end
+  def show
+    ticket = Ticket.find(params[:id])
+    render json: ticket.to_json(include: [:courier, :client])
   end
 end

@@ -1,6 +1,7 @@
 Courier.destroy_all
 Client.destroy_all
 Ticket.destroy_all
+Invoice.destroy_all
 
 20.times do
   Courier.create!({
@@ -14,7 +15,7 @@ Ticket.destroy_all
   })
 end
 
-20.times do
+100.times do
   Client.create!({
     name: Faker::Company.name,
     contact_person: Faker::Name.name,

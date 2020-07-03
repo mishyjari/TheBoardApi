@@ -10,6 +10,11 @@ class CouriersController < ApplicationController
     render json: tickets.to_json(include: [:courier, :client])
   end
 
+  def show
+    courier = Courier.find(params[:id])
+    render json: courier.to_json(methods: [:full_name, :incomplete_tickets, :tickets_today])
+  end
+
   def create
     courier = Courier.create!({
       first_name: params[:first_name],
@@ -20,7 +25,7 @@ class CouriersController < ApplicationController
       is_active: params[:is_active],
       is_archived: false
     })
-    render json: courier.to_json(include: [:tickets, :clients], methods: [:full_name, :incomplete_tickets])
+    render json: courier.to_json(include: [:tickets, :clients], methods: [:full_name, :incomplete_tickets, :tickets_today])
   end
 
   def update
@@ -34,7 +39,7 @@ class CouriersController < ApplicationController
       is_active: params[:is_active],
       is_archived: params[:is_archived]
     })
-    render json: courier.to_json(include: [:tickets, :clients], methods: [:full_name, :incomplete_tickets])
+    render json: courier.to_json(include: [:tickets, :clients], methods: [:full_name, :incomplete_tickets, :tickets_today])
   end
 
   def destroy
