@@ -24,7 +24,8 @@ class InvoicesController < ApplicationController
   def update
     invoice = Invoice.find(params[:id])
     invoice.update({
-      paid: params[:paid]
+      paid: params[:paid],
+      adjustment: params[:adjustment],
     })
     render json: invoice.to_json(include: :client, methods: [:tickets, :balance])
   end

@@ -12,6 +12,6 @@ class Invoice < ApplicationRecord
     self.tickets.each do |t|
       bal += t.base_charge
     end
-    bal
+    bal + self.adjustment
   end
 end
