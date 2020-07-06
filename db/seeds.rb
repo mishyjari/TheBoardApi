@@ -15,7 +15,7 @@ Invoice.destroy_all
   })
 end
 
-100.times do
+25.times do
   Client.create!({
     name: Faker::Company.name,
     contact_person: Faker::Name.name,
@@ -26,11 +26,15 @@ end
 
 # Complete tickets
 10000.times do
+  created = Faker::Time.between(from: 2.years.ago, to: Date.today)
+  ready = Faker::Time.between(from: created, to: created + 7.days)
+  due = Faker::Time.between(from: ready, to: ready + 1.days)
+  delivered = Faker::Time.between(from: ready, to: due)
   Ticket.create!({
     pickup: Faker::Address.full_address,
     dropoff: Faker::Address.full_address,
-    time_ready: Faker::Time.backward(days: 5000),
-    time_due: Faker::Time.backward(days: 5000),
+    time_ready: ready,
+    time_due: due,
     is_rush: Faker::Boolean.boolean(true_ratio: 0.15),
     rush_details: '',
     rush_charge: 0,
@@ -43,13 +47,13 @@ end
     courier_id: Courier.all.sample.id,
     client_id: Client.all.sample.id,
     pod: Faker::Name.name,
-    time_delivered: Faker::Time.backward(days: 5000),
+    time_delivered: delivered,
     is_complete: true,
     is_roundtrip: Faker::Boolean.boolean(true_ratio: 0.15),
     roundtrip_details: '',
     roundtrip_charge: 0,
     return_pod: '',
-    created_at: Faker::Time.backward(days: 5000),
+    created_at: created
   })
 end
 

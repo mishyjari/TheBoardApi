@@ -47,14 +47,14 @@ class TicketsController < ApplicationController
 
     tickets = Ticket.where(sql).order('CREATED_AT DESC').paginate(page: page, per_page: 20)
     render json: {
-      'tickets' => tickets.as_json(include: [:courier, :client]),
+      'tickets' => tickets.as_json(include: [:courier, :client], methods: :total_charge),
       'count' => tickets.total_entries
     }.to_json
   end
 
   def active
     tickets = Ticket.where({ is_complete: false })
-    render json: tickets.to_json(include: [:courier, :client])
+    render json: tickets.to_json(include: [:courier, :client], methods: :total_charge)
   end
 
   def create
@@ -73,9 +73,17 @@ class TicketsController < ApplicationController
       notes: params[:notes],
       additional_charge: params[:additional_charge],
       base_charge: params[:base_charge],
-      is_complete: params[:is_complete]
+      is_complete: params[:is_complete],
+      pickup_details: params[:pickup_details],
+      pickup_contact: params[:pickup_contact],
+      dropoff_details: params[:dropoff_details],
+      dropoff_contact: params[:dropoff_contact],
+      rush_charge: params[:rush_charge],
+      is_roundtrip: params[:is_roundtrip],
+      roundtrip_details: params[:roundtrip_details],
+      roundtrip_charge: params[:roundtrip_charge],
     })
-    render json: ticket.to_json(include: [:courier, :client])
+    render json: ticket.to_json(include: [:courier, :client], methods: :total_charge)
   end
 
   def update
@@ -96,10 +104,16 @@ class TicketsController < ApplicationController
       additional_charge: params[:additional_charge],
       base_charge: params[:base_charge],
       is_complete: params[:is_complete],
-      pod: params[:pod],
-      time_delivered: params[:time_delivered],
+      pickup_details: params[:pickup_details],
+      pickup_contact: params[:pickup_contact],
+      dropoff_details: params[:dropoff_details],
+      dropoff_contact: params[:dropoff_contact],
+      rush_charge: params[:rush_charge],
+      is_roundtrip: params[:is_roundtrip],
+      roundtrip_details: params[:roundtrip_details],
+      roundtrip_charge: params[:roundtrip_charge],
     })
-    render json: ticket.to_json(include: [:courier, :client])
+    render json: ticket.to_json(include: [:courier, :client], methods: :total_charge)
   end
 
   def destroy
@@ -108,6 +122,6 @@ class TicketsController < ApplicationController
   end
   def show
     ticket = Ticket.find(params[:id])
-    render json: ticket.to_json(include: [:courier, :client])
+    render json: ticket.to_json(include: [:courier, :client], methods: :total_charge)
   end
 end

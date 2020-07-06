@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_05_161330) do
+ActiveRecord::Schema.define(version: 2020_07_06_162749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,10 @@ ActiveRecord::Schema.define(version: 2020_07_05_161330) do
     t.string "roundtrip_details"
     t.string "roundtrip_charge"
     t.string "return_pod"
+    t.string "pickup_contact"
+    t.string "pickup_details"
+    t.string "dropoff_contact"
+    t.string "dropoff_details"
   end
 
   create_table "users", force: :cascade do |t|
