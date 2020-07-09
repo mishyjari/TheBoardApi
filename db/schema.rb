@@ -54,13 +54,13 @@ ActiveRecord::Schema.define(version: 2020_07_06_162749) do
     t.datetime "time_due"
     t.boolean "is_rush"
     t.string "rush_details"
-    t.integer "rush_charge"
+    t.integer "rush_charge", default: 0
     t.boolean "is_oversize"
     t.string "oversize_details"
-    t.integer "oversize_charge"
+    t.integer "oversize_charge", default: 0
     t.text "notes"
-    t.integer "additional_charge"
-    t.integer "base_charge"
+    t.integer "additional_charge", default: 0
+    t.integer "base_charge", default: 0
     t.integer "courier_id"
     t.integer "client_id"
     t.boolean "is_complete"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_162749) do
     t.datetime "time_delivered"
     t.boolean "is_roundtrip"
     t.string "roundtrip_details"
-    t.string "roundtrip_charge"
+    t.string "roundtrip_charge", default: 0
     t.string "return_pod"
     t.string "pickup_contact"
     t.string "pickup_details"

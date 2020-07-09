@@ -33,9 +33,9 @@ class ClientsController < ApplicationController
     render json: client
   end
 
-  def invoices
+  def invoices  
     invoices = Invoice.where({ client_id: params[:id] })
-    render json: invoices.to_json(include: :client, methods: :tickets)
+    render json: invoices.to_json(include: :client, methods: [:tickets, :balance])
   end
 
   def show

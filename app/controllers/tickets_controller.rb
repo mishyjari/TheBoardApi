@@ -22,7 +22,7 @@ class TicketsController < ApplicationController
 
   def incomplete_unassigned
     tickets = Ticket.where({is_complete: false}).or(Ticket.where({ courier_id: nil }))
-    render json: tickets
+    render json: tickets.to_json(methods: :total_charge)
   end
 
   def search
@@ -112,6 +112,7 @@ class TicketsController < ApplicationController
       is_roundtrip: params[:is_roundtrip],
       roundtrip_details: params[:roundtrip_details],
       roundtrip_charge: params[:roundtrip_charge],
+      pod: params[:pod]
     })
     render json: ticket.to_json(include: [:courier, :client], methods: :total_charge)
   end
