@@ -17,7 +17,7 @@ class TicketsController < ApplicationController
       .or(Ticket.where({:created_at => today.beginning_of_day..today.end_of_day}))
       .or(Ticket.where({:is_complete => false}))
       .or(Ticket.where({:courier_id => nil}))
-    render json: tickets.to_json(include: [:courier, :client])
+    render json: tickets.to_json(methods: :total_charge)
   end
 
   def incomplete_unassigned

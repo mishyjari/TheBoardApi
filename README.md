@@ -1,24 +1,7 @@
-# README
+## API for THE BOARD
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**THE BOARD is an open source dispatching application for courier companies to manage and track on-demand deliveries. It is designed as a single-page application in React to minimize requests to and from the back-end.**
 
-Things you may want to cover:
+This API is a Rails application with a Postgres database built as a back-end for [THE BOARD](https://github.com/mishyjari/TheBoardClient)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Developed by Michelle Frattaroli
